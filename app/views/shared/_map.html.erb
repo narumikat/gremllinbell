@@ -1,0 +1,36 @@
+<div data-controller="map"
+     data-mapbox-api-key="<%= ENV['MAPBOX_API_KEY'] %>"
+     data-map-coordinates="<%= @landmark ? [@landmark.long, @landmark.lat].to_json : '[]'  %>"
+     data-map-logo-url="<%= asset_path('pin_route.svg')%>"
+     data-map-landmark-logo-url="<%= asset_path('pin_route_green.png') %>"
+     data-map-pin-orange="<%= asset_path('pin_route_orange.png') %>"
+     data-map-pin-black="<%= asset_path('pin_route_black.png') %>"
+     data-map-pin-blue="<%= asset_path('pin_route_blue.png') %>"
+     data-map-pin-purple="<%= asset_path('pin_route_purple.png') %>"
+     data-map-pin-one="<%= asset_path('1.png') %>"
+     data-map-pin-two="<%= asset_path('2.png') %>"
+     data-map-pin-three="<%= asset_path('3.png') %>"
+     data-map-pin-four="<%= asset_path('4.png') %>"
+     data-map-pin-five="<%= asset_path('5.png') %>"
+     data-map-pin-six="<%= asset_path('6.png') %>"
+     data-map-pin-seven="<%= asset_path('7.png') %>"
+     data-map-pin-eight="<%= asset_path('8.png') %>"
+     data-map-pin-nine="<%= asset_path('9.png') %>"
+     data-map-pin-ten="<%= asset_path('10.png') %>"
+     data-map-remove="<%= asset_path('remove.png') %>"
+
+     data-map-pin="<%= asset_path('pin_route_yellow.png') %>">
+
+  <div id="map" style="height: 400px; width: 100%;"> </div>
+
+  <div class="waypoints-container">
+    <div id="waypoints-list">
+        <% @waypoints.each_with_index do |point, index| %>
+          <li>
+            Waypoint <%= index + 1 %> - Lat: <%= point[1] %>, Lng: <%= point[0] %>
+            <button type="button" data-action="click->map#removeWaypoint" data-index="<%= index %>">Remove</button>
+          </li>
+        <% end %>
+    </div>
+  </div>
+</div>

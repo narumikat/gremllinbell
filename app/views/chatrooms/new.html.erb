@@ -1,0 +1,33 @@
+<div class="bg-red">
+  <div class="container">
+    <%= render 'shared/logo_btn_top_white', user: (@user || current_user) %>
+  </div>
+  <div class="bg-white chatroom-page">
+    <div class="container p-4">
+      <div class="d-flex align-items-center">
+        <% recipient = @chatroom.recipient(current_user) %>
+        <% if recipient && recipient.avatar.present? %>
+          <%= image_tag recipient.avatar, class: "avatar" %>
+        <% else %>
+          <%= image_tag 'user-photo.png', class: "avatar" %>
+        <% end %>
+        <% if recipient %>
+          <h3 class="mb-0 ms-3">@<%= recipient.username %></h3>
+        <% else %>
+          <h3 class="mb-0 ms-3">Unknown User</h3>
+        <% end %>
+      </div>
+      <div class="border-bottom mx-4 mt-3"></div>
+      <div class="chatroom-msg">
+        <%= simple_form_for @chatroom, url: chatrooms_path, html: { class: "d-flex align-items-stretch" } do |f| %>
+          <%= f.hidden_field :recipient_id, value: @recipient.id %>
+          <%= text_area_tag :description, nil, 
+                      placeholder: "Your message", 
+                      class: "form-control flex-grow-1 me-2", 
+                      rows: 3 %>
+          <%= f.submit "Send", class: "btn-send" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

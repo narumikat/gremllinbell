@@ -1,0 +1,144 @@
+<div class="bg-red">
+  <% if user_signed_in? %>
+    <div class="container">
+      <%= render 'shared/logo_btn_top_white', user: (@user || current_user) %>
+      <%= render 'shared/link_user_profile', user: (@user || current_user) %>
+    </div>
+    <div class="bg-white">
+      <div class="container user-profile headers-gray">
+        <!-- SOCIAL MEDIA -->
+        <div class="social-links">
+          <% if @user.social_links.present? %>
+            <% @user.social_links.each do |platform, url| %>
+              <% if url.present? %>
+                <%= link_to url, target: "_blank", rel: "noopener" do %>
+                  <% case platform %>
+                  <% when "facebook" %>
+                    <i class="fa-brands fa-facebook"></i>
+                  <% when "instagram" %>
+                    <i class="fa-brands fa-instagram"></i>
+                  <% when "youtube" %>
+                    <i class="fa-brands fa-youtube"></i>
+                  <% when "tiktok" %>
+                    <i class="fa-brands fa-tiktok"></i>
+                  <% when "twitter" %>
+                    <i class="fa-brands fa-x-twitter"></i>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+        <!-- ABOUT -->
+        <% if @user.about.present? %>
+          <h3><strong>About </strong><%= @user.first_name%>:</h3>
+          <p class="p-2"><%= @user.about %></p>
+        <% end %>
+        <!-- POSTS -->
+        <div class="last-posts mt-4">
+          <div class="d-flex justify-content-between mb-3">
+            <% if @user == current_user %>
+              <h3><strong>My</strong> Posts:</h3>
+            <% else %>
+              <h3><%= @user.first_name %>'s <strong>Posts:</strong></h3>
+            <% end %>
+            <%= link_to user_posts_path(@user) do %>
+              <i class="fa-solid fa-circle-chevron-right"></i>
+            <% end %>
+          </div>
+          <% if @posts.any? %>
+            <div class="d-flex flex-row flex-nowrap overflow-auto">
+              <% @posts.each do |post| %>
+                <div class="col-11 col-md-6 me-2">
+                  <%= render 'posts/card', post: post %>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p><%= @user.first_name %> has not posted anything yet.</p>
+          <% end %>
+        </div>
+        <!-- BIKES -->
+        <div class="d-flex justify-content-between mt-4 pt-4 mb-2">
+          <% if @user ==current_user %>
+            <h3><strong>My</strong> Garage:</h3>
+          <% else %>
+            <h3><%= @user.first_name %>'s <strong>Garage:</strong></h3>
+          <% end %>
+          <%= link_to user_bikes_path(@user) do %>
+            <i class="fa-solid fa-circle-chevron-right"></i>
+          <% end %>
+        </div>
+        <div class="d-flex flex-row flex-nowrap overflow-auto">
+          <% if @user.bikes.any? %>
+            <% @bikes.each do |bike| %>
+              <div class="col-8 col-md-4 me-2">
+                <%= render 'components/bike_card', bike: bike %>
+              </div>
+            <% end %>
+          <% else %>
+            <p><%= @user.first_name %> has not added any bikes yet.</p>
+          <% end %>
+        </div>
+        <!-- CREATED ROUTES -->
+        <div class="created-routes mt-4 pt-4">
+          <div class="d-flex justify-content-between">
+            <% if @user == current_user %>
+              <h3><strong>My</strong> Routes:</h3>
+            <% else %>
+              <h3><%= @user.first_name %>'s <strong>Routes:</strong></h3>
+            <% end %>
+            <% if @user.routes.any? %>
+              <%= link_to created_routes_user_path(@user) do %>
+                <i class="fa-solid fa-circle-chevron-right"></i>
+              <% end %>
+            <% else %>
+              <p><%= @user.first_name %> has not created any routes yet.</p>
+            <% end %>
+          </div>
+          <div class="d-flex flex-row flex-nowrap overflow-auto">
+            <% @routes.each do |route| %>
+              <div class="col-8 col-md-3 me-2">
+                <%= render 'components/route_card', route: route %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <!-- REVIEWS -->
+        <div class="my-4">
+          <div class="d-flex justify-content-between">
+            <% if @user == current_user %>
+              <h3>My <strong>Latest Review</strong></h3>
+            <% else %>
+              <h3><%= @user.first_name %>'s <strong> Latest review</strong></h3>
+            <% end %>
+            <%= link_to user_reviews_user_path(@user) do %>
+              <i class="fa-solid fa-circle-chevron-right"></i>
+            <% end %>
+          </div>
+          <% if @reviews.present? %>
+            <div class="my-3">
+              <%= link_to route_review_path(@last_review.route, @last_review) do %>
+                <%= render 'components/review_mini_card', review: @last_review %>
+              <% end %>
+            </div>
+          <% else %>
+            <p><%= @user.first_name %> has not written any reviews yet.</p>
+          <% end %>
+        </div>
+        <% if @user == current_user %>
+          <div class="my-2 d-flex justify-content-center">
+            <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn-light-gray-sm" %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="m-4">
+          <%= link_to "Login", new_user_session_path %>
+        </div>
+        <div class="m-4">
+          <%= link_to "Register", new_user_registration_path %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

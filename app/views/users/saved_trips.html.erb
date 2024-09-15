@@ -1,0 +1,26 @@
+<div class="bg-red">
+  <div class="container">
+    <%= render 'shared/logo_btn_top_white', user: (@user || current_user) %>
+    <%= render 'shared/link_user_profile', user: (@user || current_user) %>
+  </div>
+  <div class="bg-white">
+    <div class="container">
+      <h1 class="text-center mb-4">My Saved Trips</h1>
+      <% if @saved_trips.any? %>
+        <div class="row d-flex justify-content-center">
+          <% @saved_trips.each do |route| %>
+            <div class="col-11 col-md-4 m-2">
+              <%= render "components/saved_routes_card", route: route %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p>No saved trips found.</p>
+      <% end %>
+      <div class="d-flex justify-content-center my-4">
+        <%= link_to "Explore Routes", routes_path, class: "btn-red" %>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

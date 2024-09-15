@@ -1,0 +1,284 @@
+  <% if user_signed_in? %>
+  <div class="home bg-red">
+    <div class="container">
+      <%= render 'shared/logo_btn_top_white', user: (@user || current_user) %>
+      <%= render 'shared/link_user_profile', user: (@user || current_user) %>
+      <div class="discover-routes">
+        <h3 class="m-0 p-0">Discover new routes</h3>
+        <p class="pb-0">Find the best route for you</p>
+      </div>
+    </div>
+    <div class="bg-white">
+      <div class="container">
+        <div class="d-flex justify-content-center">
+          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="pills-feed-tab" data-bs-toggle="pill" data-bs-target="#pills-feed" type="button" role="tab" aria-controls="pills-feed" aria-selected="true"><i class="fa-solid fa-list"></i></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-post-tab" data-bs-toggle="pill" data-bs-target="#pills-post" type="button" role="tab" aria-controls="pills-post" aria-selected="true"><i class="fa-solid fa-comment"></i></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-photos-tab" data-bs-toggle="pill" data-bs-target="#pills-photos" type="button" role="tab" aria-controls="pills-photos" aria-selected="false"><i class="fa-solid fa-camera"></i></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-routes-tab" data-bs-toggle="pill" data-bs-target="#pills-routes" type="button" role="tab" aria-controls="pills-routes" aria-selected="false"><i class="fa-solid fa-map-location-dot"></i></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-reviews-tab" data-bs-toggle="pill" data-bs-target="#pills-reviews" type="button" role="tab" aria-controls="pills-reviews" aria-selected="false"><i class="fa-solid fa-pen"></i></button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-bikes-tab" data-bs-toggle="pill" data-bs-target="#pills-bikes" type="button" role="tab" aria-controls="pills-bikes" aria-selected="false"><i class="fa-solid fa-motorcycle"></i></button>
+            </li>
+          </ul>
+        </div>
+        <!-- START TABS -->
+        <div class="tab-content" id="pills-tabContent">
+          <!-- FEED -->
+          <div class="tab-pane fade show active" id="pills-feed" role="tabpanel" aria-labelledby="pills-feed-tab" tabindex="0">
+            <!-- POSTS -->
+            <div class="post my-4">
+              <div class="d-flex justify-content-center">
+                <div class="col-12 col-md-8 mb-2">
+                  <h3 class="pb-2">What's up?</h3>
+                  <%= render 'posts/form', user: current_user %>
+                </div>
+              </div>
+            </div>
+            <!-- ALL ITEMS -->
+            <% if current_user.following.any? %>
+              <div class="my-4 row d-flex justify-content-center">
+                <div class="mb-2 col-md-8">
+                  <h4>Latest updates:</h4>
+                  <div class="mt-4">
+                    <% post_counter = 0 %>
+                    <% @feed_items.each do |item| %>
+                      <% post_counter += 1 %>
+                      <!-- route items -->
+                      <% if item.is_a?(Route) %>
+                        <div class="mb-2">
+                          <%= render 'components/feed_card', item: item, action_text: "created the route", item_title: item.title, item_link: route_path(item) %>
+                        </div>
+                        <!-- review items -->
+                      <% elsif item.is_a?(Review) %>
+                        <div class="mb-2">
+                          <%= render 'components/feed_card', item: item, action_text: "posted a new review for", item_title: item.route.title, item_link: route_path(item.route) %>
+                        </div>
+                        <!-- bike items -->
+                      <% elsif item.is_a?(Bike) %>
+                        <div class="mb-2">
+                          <%= render 'components/feed_img_card',
+                            item: item,
+                            user: item.user,
+                            action_text: "added a new bike",
+                            item_name: item.name,
+                            item_path: user_bikes_path(item.user),
+                            default_image: "bike_garage.jpg",
+                            photo: nil %>
+                        </div>
+                        <!-- comments -->
+                      <% elsif item.is_a?(Comment) %>
+                        <div class="mb-2">
+                          <% if item.commentable.is_a?(Route) %>
+                            <%= render 'components/feed_card', item: item, action_text: "commented on the route", item_title: item.commentable.title, item_link: route_path(item.commentable) %>
+                          <% elsif item.commentable.is_a?(Post) %>
+                            <%= render 'components/feed_card',
+                                item: item,
+                                action_text: "commented on a post by",
+                                item_title: "@#{item.commentable.user.username}",
+                                item_link: user_post_path(item.commentable.user, item.commentable) %>
+                          <% end %>
+                        </div>
+                        <!-- photos -->
+                      <% elsif item.is_a?(Hash) && item[:photo].is_a?(Photo) %>
+                        <div class="mb-2">
+                          <%= render 'components/feed_img_card',
+                            item: item[:route],
+                            user: item[:photo].user,
+                            action_text: "posted a new photo in",
+                            item_name: item[:route].title,
+                            item_path: route_path(item[:route]),
+                            default_image: "route_default.jpg",
+                            photo: item[:photo] %>
+                        </div>
+                        <!-- posts -->
+                      <% elsif item.is_a?(Post) %>
+                        <div class="mb-2">
+                          <%= render 'posts/card', post: item %>
+                        </div>
+                      <% end %>
+                      <!-- discover riders after 5 posts -->
+                      <% if post_counter == 5 || (post_counter > 5 && (post_counter - 5) % 10 == 0) %>
+                        <div class="discover my-4 row justify-content-center">
+                          <div class="d-flex justify-content-between mb-2">
+                            <h3>Find riders</h3>
+                            <%= link_to users_path do %>
+                              <i class="fa-solid fa-circle-chevron-right"></i>
+                            <% end %>
+                          </div>
+                          <div class="d-flex flex-row flex-nowrap overflow-auto">
+                            <% @users.each do |user| %>
+                              <div class="col-6 col-md-3 me-2 d-flex">
+                                <%= render 'users/user_card', user: user %>
+                              </div>
+                            <% end %>
+                          </div>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- POSTS -->
+            <div class="tab-pane fade" id="pills-post" role="tabpanel" aria-labelledby="pills-post-tab" tabindex="0">
+              <div class="d-flex justify-content-center">
+                <div class="col-12 col-md-8">
+                  <div class="feed-posts mt-4">
+                    <div>
+                      <h3 class="pb-2">What's up?</h3>
+                      <%= render 'posts/form', user: current_user %>
+                    </div>
+                    <h4 class="my-4">Recent posts:</h4>
+                    <% @posts.each do |post| %>
+                      <div class="mb-2">
+                        <%= render 'posts/card', post: post %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- PHOTOS -->
+            <div class="tab-pane fade" id="pills-photos" role="tabpanel" aria-labelledby="pills-photos-tab" tabindex="0">
+              <div class="row d-flex justify-content-center mt-4">
+                <div class="col-11 col-md-8 mb-3">
+                  <div class="feed-photos">
+                    <h4 class="mb-4">Following:</h4>
+                    <% if @routes_with_photos.any? %>
+                      <% @routes_with_photos.each do |item| %>
+                        <div class="mb-2">
+                          <%= render 'components/feed_img_card',
+                            item: item[:route],
+                            user: item[:user],
+                            action_text: "posted a new photo in",
+                            item_name: item[:route].title,
+                            item_path: route_path(item[:route]),
+                            default_image: "route_default.jpg",
+                            photo: item[:photo] %>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% else %>
+                    <p>No photos from users you follow.</p>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <!-- ROUTES-->
+            <div class="tab-pane fade" id="pills-routes" role="tabpanel" aria-labelledby="pills-routes-tab" tabindex="0">
+              <div class="row d-flex justify-content-center">
+                <div class="col-11 col-md-8">
+                  <div class="friends-routes mt-4">
+                    <h4 class="mb-4">Following:</h4>
+                    <% if @routes.any? %>
+                      <% @routes.each do |route| %>
+                        <div class="mb-2">
+                          <%= render 'components/feed_card', item: route, action_text: "created the route", item_title: route.title, item_link: route_path(route) %>
+                        </div>
+                      <% end %>
+                    <% else %>
+                      <p>No routes from users you follow.</p>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- REVIEWS -->
+            <div class="tab-pane fade" id="pills-reviews" role="tabpanel" aria-labelledby="pills-reviews-tab" tabindex="0">
+              <div class="row d-flex justify-content-center mt-4">
+                <div class="col-11 col-md-8 mb-2">
+                  <div class="friends-review">
+                    <h4 class="mb-4">Following:</h4>
+                    <h5>Reviews:</h5>
+                    <% if @reviews.any? %>
+                      <% @reviews.each do |review| %>
+                        <div class="mb-2">
+                          <%= link_to route_review_path(review.route_id, review.id) do %>
+                            <%= render 'components/feed_card', item: review, action_text: "created a new review for", item_title: review.route.title, item_link: route_path(review.route) %>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    <% else %>
+                      <p>No reviews from users you follow.</p>
+                    <% end %>
+                  </div>
+                  <!-- COMMENTS -->
+                  <div class="friends-comments mt-4">
+                    <h5>Comments:</h5>
+                    <% if @comments.any? %>
+                      <div class="mt-4">
+                        <% @comments.each do |comment| %>
+                          <div class="mb-2">
+                            <!-- Route comments -->
+                            <% if comment.commentable.is_a?(Route) %>
+                              <%= render 'components/feed_card',
+                                  item: comment,
+                                  action_text: "created a new comment in route",
+                                  item_title: comment.commentable.title,
+                                  item_link: route_path(comment.commentable) %>
+                              <!-- Posts comments -->
+                            <% elsif comment.commentable.is_a?(Post) %>
+                              <%= render 'components/feed_card',
+                                  item: comment,
+                                  action_text: "commented on a post by",
+                                  item_title: "@#{comment.commentable.user.username}",
+                                  item_link: user_post_path(comment.commentable.user, comment.commentable) %>
+                            <% else %>
+                              <p>Comentário sem entidade associada.</p>
+                            <% end %>
+                          </div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- BIKES-->
+            <div class="tab-pane fade" id="pills-bikes" role="tabpanel" aria-labelledby="pills-bikes-tab" tabindex="0">
+              <div class="row d-flex justify-content-center mt-4">
+                <div class="col-11 col-md-8">
+                  <div class="friends-bikes">
+                    <h4 class="mb-4">Following:</h4>
+                    <% if @bikes.any? %>
+                      <% @bikes.each do |bike| %>
+                        <div class="mb-3">
+                          <%= render 'components/feed_img_card',
+                              item: bike,
+                              user: bike.user,
+                              action_text: "added a new bike",
+                              item_name: bike.name,
+                              item_path: user_bikes_path(bike.user),
+                              default_image: "bike_garage.jpg",
+                              photo: nil %>
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <!-- END TABS -->
+          <% else %>
+            <div class="my-4 d-flex justify-content-center text-bold">
+              <p>You are not following anyone yet.</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <!-- LOGIN PAGE -->
+    <%= render 'login_screen' %>
+  <% end %>

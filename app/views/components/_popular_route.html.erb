@@ -1,0 +1,17 @@
+<div class="d-flex flex-row flex-nowrap overflow-auto">
+  <% if params[:query].present?%>
+    <% @top_five.each do |route| %>
+      <div class="col-8 col-md-4 me-2">
+        <%= render 'components/route_card', route: route %>
+      </div>
+    <% end %>
+  <% else %>
+    <% @popular_routes.each do |route| %>
+      <div class="col-6 col-md-3 me-2">
+        <%= render 'components/route_card', route: route %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+<h4 class="mt-4 text-center">Browse all of them</h4>
+<div class="m-4 border-bottom"></div>

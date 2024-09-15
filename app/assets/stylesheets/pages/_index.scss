@@ -1,0 +1,30 @@
+// Import page-specific CSS files here.
+@import "home";
+@import "routes_show";
+@import "users_show";
+@import "routes_new";
+@import "route_edit";
+@import "login";
+@import "user_profile";
+@import "chat_pages";
+
+h1, h2, h3, h4, h5, h6, h7, p, small {
+  color: $black;
+}
+
+a {
+  text-decoration: none;
+}
+
+.headers-gray {
+  h3 {
+    font-weight: 600;
+    color: $gray-hover
+  }
+
+  h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $gray-hover
+  }
+}

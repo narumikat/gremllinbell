@@ -1,0 +1,27 @@
+<div class="bg-red">
+  <div class="container">
+    <%= render 'shared/logo_btn_top_white', user: (@user || current_user) %>
+    <%= render 'shared/link_user_profile', user: (@user || current_user) %>
+  </div>
+  <div class="bg-white">
+    <div class="container">
+      <h3 class="text-center"><%= @user.username %> followers</h3>
+      <div class="d-flex justify-content-center mb-4 pt-2">
+        <div class="col-10">
+          <%= render 'components/search_bar' %>
+        </div>
+      </div>
+      <div class="row">
+        <% if @user.followers.any? %>
+          <% @followers.each do |user| %>
+            <div class="col-6 col-md-4 mb-2">
+              <%= render 'user_card', user: user %>
+            </div>
+          <% end %>
+        <% else %>
+          <p>No followers yet</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+.bg-red {
+  background-image: image-url('bg-app.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  .bg-white {
+    margin-top: 30px;
+    background: $light-gray;
+    border-radius: 42px 42px 0 0;
+    padding-top: 2.5rem;
+    padding-bottom: 100px;
+    flex-grow: 1;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}

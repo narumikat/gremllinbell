@@ -1,0 +1,34 @@
+<div class="saved-route-card">
+  <% if route.photos.any? %>
+    <% first_photo = route.photos.first %>
+    <% if first_photo.image.attached? %>
+      <%= cl_image_tag first_photo.image.key, class: "card-img" %>
+    <% else %>
+      <%= image_tag "default-route-image.jpg", class: "card-img" %>
+    <% end %>
+  <% else %>
+    <%= image_tag "default-route-image.jpg", class: "card-img" %>
+  <% end %>
+  <div class="card-body" >
+    <%= link_to route_path(route) do %>
+      <h5 class="col-11"><%= route.title %></h5>
+    <% end %>
+    <%= button_to unsave_route_path(route), method: :delete do %>
+      <i class="fa-solid fa-trash-can"></i>
+    <% end %>
+    <%= link_to route_path(route) do %>
+      <div class="d-flex align-items-center mb-4">
+        <i class="fa-solid fa-location-dot"></i>
+        <p class='ms-2 pb-0 mb-0'>Japan</p>
+      </div>
+      <p class="card-text"><%= route.description %></p>
+      <div class="my-2">
+        <% route.ride_type.each do |type| %>
+          <%= link_to routes_path(query: {ride_type: type }) do %>
+            <span class="tag-card me-2"><%= type %></span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

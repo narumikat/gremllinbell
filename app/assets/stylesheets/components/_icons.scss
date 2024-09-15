@@ -1,0 +1,111 @@
+.fa-circle-chevron-right {
+  color: $gray-icon;
+  font-size: 2rem;
+  margin-right: 0.3rem;
+  transition: color 0.3s;
+
+  &:hover {
+    color: $gray-hover;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
+}
+
+.fa-circle-plus {
+  color: $yellow;
+  font-size: 2rem;
+}
+
+.fa-location-arrow {
+  color: $dark-red;
+  transition: color 0.3s;
+  font-size: 25px;
+
+  &:hover {
+    color: lighten($dark-red, 10%);
+  }
+}
+
+.fa-pen-to-square {
+  color: $gray-icon;
+  transition: color 0.3s;
+
+  &:hover {
+    color: $gray-hover;
+  }
+}
+
+.follower-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+
+  button {
+    border: none;
+    background: none;
+    text-decoration: none;
+
+    .fa-user-plus {
+      color: $dark-red;
+      transition: color 0.3s;
+      
+      &:hover {
+        color: lighten($dark-red, 10%);
+      }
+    }
+
+    .fa-user-check {
+      color: $gray-icon;
+      transition: color 0.3s;
+
+      &:hover {
+        color: $gray-hover;
+      }
+    }
+
+    i {
+      font-size: 20px;
+    }
+  }
+}
+
+.fa-caret-down, .fa-caret-up {
+  color: $gray-icon;
+}
+
+.follower-icon-show-user {
+
+  button {
+    border: none;
+    background: none;
+    text-decoration: none;
+
+    .fa-user-plus {
+      color: $white;
+      transition: color 0.3s;
+      
+      &:hover {
+        color: lighten($gray-icon, 10%);
+      }
+    }
+
+    .fa-user-check {
+      color: $gray-icon;
+      transition: color 0.3s;
+
+      &:hover {
+        color: lighten($gray-icon, 10%);
+      }
+    }
+
+    i {
+      font-size: 30px;
+      @media (max-width: 768px) {
+        font-size: 20px;
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}

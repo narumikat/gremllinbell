@@ -1,0 +1,49 @@
+.user-card {
+  border-radius: 8px;
+  position: relative;
+  padding: 0.5rem;
+  width: 100%;
+
+  .location {
+    background: $dark-red;
+    padding: 0.3rem 0.8rem;
+    color: white;
+    display: inline-flex;
+    max-width: max-content;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+
+    p {
+      margin: 0;
+      padding: 0;
+      color: white;
+      font-size: 0.8rem;
+    }
+
+    i {
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    h4 {
+      font-size: 1.2rem;
+    }
+  }
+
+  .user-avatar {
+    position: relative;
+    .fa-comment-dots {
+      position: absolute;
+      right: -5px;
+      bottom: 10px;
+      background: #fff;
+      padding: 0.3rem;
+      font-size: 1.2rem;
+      border-radius: 50%;
+      box-shadow: 0 0px 2px rgba(0,0,0,0.2);
+      color: $light-blue;
+    }
+  }
+}

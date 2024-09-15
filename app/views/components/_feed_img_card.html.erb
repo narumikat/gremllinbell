@@ -1,0 +1,34 @@
+<div class="border feed-img-card">
+  <div class="d-flex">
+    <%= link_to user_path(user) do %>
+      <% if user.avatar.present? %>
+        <div class="me-2">
+          <%= image_tag user.avatar, class: "avatar" %>
+        </div>
+      <% else %>
+        <div class="me-2">
+          <%= image_tag "user-photo.png", class: "avatar" %>
+        </div>
+      <% end %>
+    <% end %>
+    <div>
+      <p class="mb-0">
+        <strong><%= link_to user_path(user) do %>@<%= user.username %><% end %></strong>
+        <%= action_text %>
+        <span><%= link_to item_path do %><%= item_name %><% end %></span>
+      </p>
+      <small class="mb-0"><%= item.created_at.strftime("%B %d, %Y") %></small>
+    </div>
+  </div>
+  <div class="img-card mt-2">
+    <% if photo.present? %>
+      <!-- Using model photo -->
+      <%= cl_image_tag photo.image.key, class: "card-img" %>
+    <% elsif item.respond_to?(:photos) && item.photos.attached? %>
+      <!-- Using Active Storage in Bikes -->
+      <%= image_tag url_for(item.photos.first), class: "card-img" %>
+    <% else %>
+      <%= image_tag default_image, class: 'card-img' %>
+    <% end %>
+  </div>
+</div>

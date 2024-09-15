@@ -1,0 +1,82 @@
+<div class="bg-red">
+  <div class="container">
+    <%= render 'shared/logo_btn_top_white', user: (@user || current_user) %>
+    <%= render 'shared/link_user_profile', user: (@user || current_user) %>
+  </div>
+  <div class="bg-white">
+    <div class="container headers-gray">
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <%= render 'components/search_bar' %>
+        </div>
+        <div class="text-center pb-2" data-controller="route-search">
+          <div class="row">
+            <div class="ride-types drop-down-search mt-3" data-route-search-target="searchBars">
+              <% @ride_types.each_with_index do |type, index| %>
+                <% if index.even? %>
+                  <div class="col-md-6 px-2 col-12 mb-2">
+                    <div class="d-flex justify-content-between">
+                    <% end %>
+                    <div class="col-md-3 col-6 px-2 text-center mb-2">
+                      <% if params[:query].present? && params[:query][:prefecture].present? %>
+                        <% current_prefecture = params[:query][:prefecture] %>
+                        <% current_ride_type = type %>
+                        <%= link_to routes_path(query: {prefecture: current_prefecture, ride_type: current_ride_type }) do %>
+                          <span class="route-tag rounded-pill"><%= type %></span>
+                        <% end %>
+                      <% else %>
+                        <%= link_to routes_path(query: {ride_type: type }) do %>
+                          <span class="route-tag rounded-pill"><%= type %></span>
+                        <% end %>
+                      <% end %>
+                    </div>
+                    <% if index.odd? %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="mb-4">
+              <i class="fa fa-caret-down fa-2xl" aria-hidden="true" class="btn-light-gray"
+              data-route-search-target="rideTypeSearchButton"
+              data-action="click->route-search#expandRideTypes">
+              </i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="px-3">
+        <div class="last_routes mb-4">
+          <div class="d-flex justify-content-between">
+            <h3>Latest Routes</h3>
+            <%= link_to routes_path do %>
+              <i class="fa-solid fa-circle-chevron-right"></i>
+            <% end %>
+          </div>
+          <div class="d-flex flex-row flex-nowrap overflow-auto">
+            <% @last_routes.each do |route| %>
+              <div class="col-9 col-md-3 me-2">
+                <%= render 'components/route_card', route: route %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="last_users">
+          <div class="d-flex justify-content-between">
+            <h3 class="mb-4">Latest Users</h3>
+            <%= link_to users_path do %>
+              <i class="fa-solid fa-circle-chevron-right"></i>
+            <% end %>
+          </div>
+          <div class="d-flex flex-row flex-nowrap overflow-auto">
+            <% @last_users.each do |user| %>
+              <div class="col-6 col-md-4 me-2">
+                <%= render 'users/user_card', user: user %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

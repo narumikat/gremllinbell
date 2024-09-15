@@ -1,0 +1,22 @@
+<div class="bg-red">
+  <div class="container">
+    <%= render 'shared/logo_btn_top_white', user: (@user || current_user) %>
+    <%= render 'shared/link_user_profile', user: (@user || current_user) %>
+  </div>
+  <div class="bg-white">
+    <div class="container">
+      <h3 class="text-center"><strong><%= @user.username %>'s routes:</strong></h3>
+      <% if @routes.present? %>
+        <div class="row d-flex justify-content-center">
+          <% @routes.each do |route| %>
+            <div class="col-10 col-md-4 mb-2">
+              <%= render 'components/route_card', route: route %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p>No routes found.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

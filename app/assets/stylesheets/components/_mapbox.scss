@@ -1,0 +1,95 @@
+.mapboxgl-ctrl-geocoder {
+  width: 250px;
+  input {
+    height: 38px;
+    font-size: 15px;
+  }
+}
+
+.mapboxgl-ctrl-top-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-geocoder {
+  min-width: 200px;
+}
+
+.mapboxgl-ctrl-geocoder--icon-search {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  width: 23px;
+  height: 23px;
+}
+
+.custom-remove-btn {
+  background-color: #980403;
+  border-color: #980403;
+  border-radius: 6px;
+}
+
+.custom-remove-btn:hover {
+  background-color: #d75e62;
+  border-color: #d75e62;
+}
+
+.no-marker {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 2px;
+  margin-top: 5px;
+}
+
+.landmark-search-form .form-group {
+  margin-bottom: 0;
+}
+
+.landmark-search-form label {
+  margin-bottom: 0;
+}
+
+.landmark-search-form input {
+  margin-top: 0 !important;;
+  width: 100% !important;;
+  background-color: var(--bs-body-bg) !important;;
+  border: var(--bs-border-width) solid var(--bs-border-color) !important;;
+
+  // padding-top: 0;
+}
+
+.landmark-address {
+  margin-top: 0;
+  margin-bottom: 0rem;
+}
+
+#selected-address-container p {
+  margin-bottom: 2px;
+  padding: 1px;   /* Adds some padding around the address */
+  // border: 1px solid #ddd; /* Adds a border around each address */
+  // border-radius: 5px;   /* Adds rounded corners to the border */
+  // background-color: #f9f9f9; /* Light background color for the addresses */
+}
+
+.mapboxgl-ctrl-geocoder--icon-close {
+    width: 15px !important;
+    height: 16px !important;
+    margin-top: 5px !important;
+    margin-right: 3px !important;
+}
+
+.waypoint-icon {
+  height: 40px;
+  margin-bottom: -4px;
+  margin-top: -2px;
+}
+
+.custom-remove-btn {
+  margin-top: 3px;
+  margin-left: 2px;
+  padding: 0px;
+  height: 26px;
+  border: none;
+  width: 26px;
+}

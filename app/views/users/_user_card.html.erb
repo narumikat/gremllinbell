@@ -1,0 +1,49 @@
+<div class="border user-card">
+  <% if user != current_user %>
+    <div class="follower-icon">
+      <% if current_user.following.include?(user) %>
+        <%= button_to unfollow_user_path(user), method: :delete, remote: true do %>
+          <i class="fa-solid fa-user-check"></i>
+        <% end %>
+      <% else %>
+        <%= button_to follow_user_path(user), method: :post, remote: true do %>
+          <i class="fa-solid fa-user-plus"></i>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="d-flex flex-column justify-content-center align-items-center text-center">
+    <%= link_to user_path(user) do %>
+      <div class="user-avatar">
+        <% if user&.avatar.present? %>
+          <div class="p-2"><%= cl_image_tag user&.avatar.key, class: "avatar-bordered" %></div>
+        <% else %>
+          <div class="p-2"><%= image_tag "user-photo.png", class: "avatar-bordered" %></div>
+        <% end %>
+        <% existing_chatroom = Chatroom.find_by(user: current_user, recipient: user) || Chatroom.find_by(user: user, recipient: current_user) %>
+        <% if existing_chatroom %>
+          <%= link_to chatroom_path(existing_chatroom) do %>
+            <i class="fa-solid fa-comment-dots ms-2"></i>
+          <% end %>
+        <% else %>
+          <%= link_to new_chatroom_path(recipient_id: user.id) do %>
+            <i class="fa-solid fa-comment-dots ms-2"></i>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="user-info mt-2">
+      <h4><%= user.username %></h4>
+      <div class="location">
+        <i class="fa-solid fa-location-dot me-2"></i>
+        <p><%= user.prefecture %></p>
+      </div>
+    </div>
+    <div class="user-rides">
+      <p class="pb-0 mb-0 pt-2"><%= user.routes.count %> routes</p>
+    </div>
+    <div class="d-flex align-items-center user-followers">
+      <p class="mb-3"><%= user.followers.count %> followers</p>
+    </div>
+  </div>
+</div>
